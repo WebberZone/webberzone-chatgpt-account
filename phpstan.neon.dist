@@ -1,0 +1,16 @@
+parameters:
+    level: 5
+    paths:
+        - webberzone-chatgpt-account.php
+        - uninstall.php
+        - includes/
+    scanFiles:
+        - webberzone-chatgpt-account.php
+        - phpstan-bootstrap.php
+    scanDirectories:
+        - includes
+        - vendor/wordpress/php-ai-client/src
+        - vendor/wordpress/ai-provider-for-openai/src
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+    ignoreErrors:
