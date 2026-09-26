@@ -32,6 +32,20 @@ Not supported: embeddings, text-to-speech and image editing.
 | `wzcga_codex_client_version` | Codex CLI version reported to the backend; it gates which models are listed. |
 | `wzcga_fallback_models` | Text models offered when the live model list can't be fetched. |
 
+## Shared files
+
+This plugin and its sibling ([WebberZone Grok Account](https://github.com/WebberZone/webberzone-grok-account)) share their sign-in, token and Connectors code. These files are identical in both repos apart from the namespace (`ChatGPT_Account` / `Grok_Account`), prefix (`wzcga` / `wzgka`, `WZCGA` / `WZGKA`) and text domain (`webberzone-chatgpt-account` / `webberzone-grok-account`):
+
+- `includes/class-oauth-client.php` — refresh with locking, pending device codes, HTTP helpers
+- `includes/class-token-store.php` — encrypted token storage
+- `includes/class-admin.php` — settings page and AJAX endpoints
+- `includes/class-connectors.php` — Settings → Connectors integration
+- `includes/class-availability.php`
+- `assets/js/connectors.js` — Connectors card and sign-in modal
+- `uninstall.php`
+
+Provider-specific wording lives in `includes/class-config.php`; the device-code flow and refresh request live in `includes/class-oauth.php`. Change a shared file in one repo, apply the same rename to copy it to the other, and keep them in step.
+
 ## Contributing
 
 - Fork the repository and create your branch from `master`.

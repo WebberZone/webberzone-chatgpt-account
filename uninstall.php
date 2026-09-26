@@ -1,6 +1,6 @@
 <?php
 /**
- * Uninstall WebberZone ChatGPT Account.
+ * Uninstall routine: removes the stored tokens and caches.
  *
  * @package WebberZone\ChatGPT_Account
  */

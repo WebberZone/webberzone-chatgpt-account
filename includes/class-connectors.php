@@ -13,7 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Replaces core's API-key card for this provider on Settings → Connectors with a "Sign in with ChatGPT" card.
+ * Replaces core's API-key card for this provider on Settings → Connectors with a sign-in card.
  *
  * @since 1.0.0
  */
@@ -64,7 +64,7 @@ class Connectors {
 	}
 
 	/**
-	 * Data passed to the script module.
+	 * Data passed to the script module, including all of its (translated) strings.
 	 *
 	 * @since 1.0.0
 	 *
@@ -73,17 +73,31 @@ class Connectors {
 	 */
 	public static function module_data( $data ) {
 		$tokens = Token_Store::get();
+		$note   = Config::note();
 		return array_merge(
 			(array) $data,
 			array(
-				'slug'        => PROVIDER_ID,
-				'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
-				'nonce'       => wp_create_nonce( Admin::NONCE ),
-				'connected'   => null !== $tokens,
-				'email'       => $tokens['email'] ?? '',
-				'plan'        => $tokens['plan'] ?? '',
-				'settingsUrl' => admin_url( 'options-general.php?page=' . Admin::PAGE ),
-				'securityUrl' => OAuth::SECURITY_SETTINGS_URL,
+				'slug'      => PROVIDER_ID,
+				'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
+				'nonce'     => wp_create_nonce( Admin::NONCE ),
+				'connected' => null !== $tokens,
+				'account'   => null !== $tokens ? Config::account_summary( $tokens ) : '',
+				'note'      => $note['text'],
+				'noteUrl'   => $note['url'],
+				'strings'   => array(
+					'signIn'        => Config::sign_in_label(),
+					'deviceStep'    => Config::device_step(),
+					'enterCode'     => __( '2. Enter this code:', 'webberzone-chatgpt-account' ),
+					'requesting'    => __( 'Requesting a sign-in code…', 'webberzone-chatgpt-account' ),
+					'waiting'       => __( 'Waiting for you to approve the sign-in. The code expires in 15 minutes.', 'webberzone-chatgpt-account' ),
+					'copy'          => __( 'Copy', 'webberzone-chatgpt-account' ),
+					'copied'        => __( 'Copied', 'webberzone-chatgpt-account' ),
+					'tryAgain'      => __( 'Try again', 'webberzone-chatgpt-account' ),
+					'cancel'        => __( 'Cancel', 'webberzone-chatgpt-account' ),
+					'connected'     => __( 'Connected', 'webberzone-chatgpt-account' ),
+					'disconnect'    => __( 'Disconnect', 'webberzone-chatgpt-account' ),
+					'requestFailed' => __( 'Request failed.', 'webberzone-chatgpt-account' ),
+				),
 			)
 		);
 	}
