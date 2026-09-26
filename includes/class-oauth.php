@@ -58,40 +58,45 @@ class OAuth extends OAuth_Client {
 	 * @throws RuntimeException When OpenAI rejects the request.
 	 */
 	public static function start_device_flow() {
-		$response = static::post_json( self::ISSUER . '/api/accounts/deviceauth/usercode', array( 'client_id' => self::CLIENT_ID ) );
-		$status   = (int) wp_remote_retrieve_response_code( $response );
-		if ( 404 === $status ) {
-			throw new RuntimeException(
-				esc_html(
-					sprintf(
-					/* translators: %s: ChatGPT security settings URL. */
-						__( 'Device code login is turned off for this ChatGPT account. Enable it under ChatGPT Settings → Security (%s), then try again.', 'webberzone-chatgpt-account' ),
-						self::SECURITY_SETTINGS_URL
-					)
-				)
-			);
-		}
-		$body = static::decode( $response, $status );
+		return static::with_lock(
+			static function () {
+				$response = static::post_json( self::ISSUER . '/api/accounts/deviceauth/usercode', array( 'client_id' => self::CLIENT_ID ) );
+				$status   = (int) wp_remote_retrieve_response_code( $response );
+				if ( 404 === $status ) {
+					throw new RuntimeException(
+						esc_html(
+							sprintf(
+							/* translators: %s: ChatGPT security settings URL. */
+								__( 'Device code login is turned off for this ChatGPT account. Enable it under ChatGPT Settings → Security (%s), then try again.', 'webberzone-chatgpt-account' ),
+								self::SECURITY_SETTINGS_URL
+							)
+						)
+					);
+				}
+				$body = static::decode( $response, $status );
 
-		$user_code = $body['user_code'] ?? ( $body['usercode'] ?? '' );
-		if ( empty( $body['device_auth_id'] ) || '' === $user_code ) {
-			throw new RuntimeException( esc_html__( 'Unexpected response when requesting a device code.', 'webberzone-chatgpt-account' ) );
-		}
+				$user_code = $body['user_code'] ?? ( $body['usercode'] ?? '' );
+				if ( empty( $body['device_auth_id'] ) || '' === $user_code ) {
+					throw new RuntimeException( esc_html__( 'Unexpected response when requesting a device code.', 'webberzone-chatgpt-account' ) );
+				}
 
-		$flow = array(
-			'device_auth_id' => (string) $body['device_auth_id'],
-			'user_code'      => (string) $user_code,
-			'interval'       => max( 3, (int) ( $body['interval'] ?? 5 ) ),
-			'expires_at'     => time() + static::FLOW_TTL,
-			'last_poll'      => 0,
-		);
-		set_transient( static::flow_key(), $flow, static::FLOW_TTL );
+				$flow = array(
+					'flow_id'        => wp_generate_uuid4(),
+					'device_auth_id' => (string) $body['device_auth_id'],
+					'user_code'      => (string) $user_code,
+					'interval'       => max( 3, (int) ( $body['interval'] ?? 5 ) ),
+					'expires_at'     => time() + static::FLOW_TTL,
+					'last_poll'      => 0,
+				);
+				set_transient( static::flow_key(), $flow, static::FLOW_TTL );
 
-		return array(
-			'user_code'        => $flow['user_code'],
-			'verification_url' => self::ISSUER . '/codex/device',
-			'interval'         => $flow['interval'],
-			'expires_at'       => $flow['expires_at'],
+				return array(
+					'user_code'        => $flow['user_code'],
+					'verification_url' => self::ISSUER . '/codex/device',
+					'interval'         => $flow['interval'],
+					'expires_at'       => $flow['expires_at'],
+				);
+			}
 		);
 	}
 
@@ -130,9 +135,6 @@ class OAuth extends OAuth_Client {
 			throw new RuntimeException( esc_html__( 'Unexpected response while waiting for sign-in.', 'webberzone-chatgpt-account' ) );
 		}
 
-		// The authorization code is single-use, so drop the flow before exchanging it.
-		delete_transient( static::flow_key() );
-
 		$response = static::post_form(
 			self::ISSUER . '/oauth/token',
 			array(
@@ -143,7 +145,16 @@ class OAuth extends OAuth_Client {
 				'code_verifier' => $body['code_verifier'],
 			)
 		);
-		static::store_tokens( static::decode( $response ) );
+		$tokens   = static::decode( $response );
+		static::with_lock(
+			static function () use ( $flow, $tokens ) {
+				if ( ! static::flow_is_current( $flow ) ) {
+					throw new RuntimeException( esc_html__( 'The sign-in was cancelled or replaced.', 'webberzone-chatgpt-account' ) );
+				}
+				delete_transient( static::flow_key() );
+				static::store_tokens( $tokens );
+			}
+		);
 
 		return 'connected';
 	}
