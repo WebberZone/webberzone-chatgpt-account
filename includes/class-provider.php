@@ -72,7 +72,7 @@ class Provider extends AbstractApiProvider {
 			PROVIDER_ID,
 			__( 'ChatGPT Account', 'webberzone-chatgpt-account' ),
 			ProviderTypeEnum::cloud(),
-			admin_url( 'options-general.php?page=' . Admin::PAGE ),
+			admin_url( 'options-connectors.php' ),
 			RequestAuthenticationMethod::apiKey(),
 			__( 'Text and image generation using your ChatGPT subscription. Sign in with ChatGPT; no API key needed.', 'webberzone-chatgpt-account' ),
 			file_exists( $logo ) ? $logo : null

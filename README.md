@@ -16,7 +16,7 @@ _License:_ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 
 _WebberZone ChatGPT Account_ adds a **ChatGPT Account** provider to the WordPress AI Client. You sign in with your ChatGPT account using a one-time device code, and text and image generation run against your ChatGPT plan instead of an OpenAI API key.
 
-- _Sign in from Settings → Connectors:_ the provider replaces core's API-key field with a "Sign in with ChatGPT" card and modal. Settings → ChatGPT Account offers the same flow.
+- _Sign in from Settings → Connectors:_ the provider replaces core's API-key field with a "Sign in with ChatGPT" card and modal.
 - _Device-code flow:_ the same flow as `codex login --device-auth`. Everything runs in wp-admin; no CLI helper and no public REST endpoint.
 - _Text generation:_ streams from `chatgpt.com/backend-api/codex/responses`, reusing the AI Provider for OpenAI's message and response mapping.
 - _Image generation:_ GPT Image 2 via `chatgpt.com/backend-api/codex/images/generations`.
@@ -38,7 +38,7 @@ This plugin and its sibling ([WebberZone Grok Account](https://github.com/Webber
 
 - `includes/class-oauth-client.php` — refresh with locking, pending device codes, HTTP helpers
 - `includes/class-token-store.php` — encrypted token storage
-- `includes/class-admin.php` — settings page and AJAX endpoints
+- `includes/class-admin.php` — AJAX endpoints and Plugins screen link
 - `includes/class-connectors.php` — Settings → Connectors integration
 - `includes/class-availability.php`
 - `assets/js/connectors.js` — Connectors card and sign-in modal

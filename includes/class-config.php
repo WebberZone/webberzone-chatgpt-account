@@ -54,28 +54,6 @@ class Config {
 	}
 
 	/**
-	 * Introduction shown on the settings page.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string
-	 */
-	public static function intro() {
-		return __( 'Use your ChatGPT subscription for text and image generation in the WordPress AI Client, instead of an OpenAI API key. Embeddings and text-to-speech still need the OpenAI API-key provider.', 'webberzone-chatgpt-account' );
-	}
-
-	/**
-	 * Message shown when the plugin's dependencies are missing.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string
-	 */
-	public static function requirements() {
-		return __( 'The WordPress AI Client and a compatible version of the AI Provider for OpenAI plugin are both required.', 'webberzone-chatgpt-account' );
-	}
-
-	/**
 	 * Note shown before signing in. Text inside <a></a> is linked to the URL, when there is one.
 	 *
 	 * @since 1.0.0
@@ -98,21 +76,6 @@ class Config {
 	 */
 	public static function device_step() {
 		return __( '1. Open <a>the ChatGPT device sign-in page</a> and sign in.', 'webberzone-chatgpt-account' );
-	}
-
-	/**
-	 * Account details shown on the settings page.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param  array $tokens Token data.
-	 * @return array<string, string> Label => value.
-	 */
-	public static function account_rows( array $tokens ) {
-		return array(
-			__( 'Account', 'webberzone-chatgpt-account' ) => (string) ( $tokens['email'] ?? '' ),
-			__( 'Plan', 'webberzone-chatgpt-account' )    => ucfirst( (string) ( $tokens['plan'] ?? '' ) ),
-		);
 	}
 
 	/**
