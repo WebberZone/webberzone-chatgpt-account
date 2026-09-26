@@ -13,3 +13,4 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 delete_option( 'wzcga_tokens' );
 delete_option( 'wzcga_refresh_lock' );
 delete_transient( 'wzcga_models' );
+delete_transient( 'wzcga_models_failed' );
