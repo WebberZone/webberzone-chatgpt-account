@@ -5,7 +5,7 @@ Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: ai-provider-for-openai
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,6 +58,14 @@ Enable it in ChatGPT under Settings → Security, then try again. Workspace (Bus
 
 == Changelog ==
 
+= 1.0.2 =
+
+Release date: 3 October 2026
+
+**Changed**
+
+* Removed the `Domain Path` header, which pointed to a missing `languages` folder.
+
 = 1.0.1 =
 
 Release date: 3 October 2026
@@ -85,8 +93,3 @@ Release date: 26 September 2026
 = Earlier versions =
 
 For the changelog of earlier versions, please refer to the [releases page on GitHub](https://github.com/WebberZone/webberzone-chatgpt-account/releases).
-
-== Upgrade Notice ==
-
-= 1.0.1 =
-Improves sign-in reliability during temporary connection failures and concurrent requests. Update recommended.

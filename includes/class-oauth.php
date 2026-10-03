@@ -204,7 +204,7 @@ class OAuth extends OAuth_Client {
 			throw new RuntimeException( esc_html__( 'The token response was missing required fields.', 'webberzone-chatgpt-account' ) );
 		}
 		$claims = static::jwt_claims( $id_token );
-		$auth   = $claims['https://api.openai.com/auth'] ?? array();
+		$auth   = $claims['https://api.openai.com/auth'] ?? array(); // phpcs:ignore PluginCheck.CodeAnalysis.AIProvider.DirectIntegration -- JWT claim name, not an API call.
 
 		$tokens = array(
 			'access_token'  => $body['access_token'],
