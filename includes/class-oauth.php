@@ -108,16 +108,24 @@ class OAuth extends OAuth_Client {
 	 * @throws RuntimeException When the flow expired or OpenAI returned an error.
 	 */
 	public static function poll_device_flow() {
-		$flow = get_transient( static::flow_key() );
-		if ( ! is_array( $flow ) || $flow['expires_at'] < time() ) {
-			delete_transient( static::flow_key() );
-			throw new RuntimeException( esc_html__( 'The sign-in code expired. Start again.', 'webberzone-chatgpt-account' ) );
-		}
-		if ( time() - $flow['last_poll'] < $flow['interval'] ) {
+		$flow = static::with_lock(
+			static function () {
+				$flow = static::fresh_flow();
+				if ( ! is_array( $flow ) || $flow['expires_at'] < time() ) {
+					delete_transient( static::flow_key() );
+					throw new RuntimeException( esc_html__( 'The sign-in code expired. Start again.', 'webberzone-chatgpt-account' ) );
+				}
+				if ( time() - $flow['last_poll'] < $flow['interval'] ) {
+					return null;
+				}
+				$flow['last_poll'] = time();
+				set_transient( static::flow_key(), $flow, max( 1, $flow['expires_at'] - time() ) );
+				return $flow;
+			}
+		);
+		if ( null === $flow ) {
 			return 'pending';
 		}
-		$flow['last_poll'] = time();
-		set_transient( static::flow_key(), $flow, max( 1, $flow['expires_at'] - time() ) );
 
 		$response = static::post_json(
 			self::ISSUER . '/api/accounts/deviceauth/token',
@@ -135,26 +143,30 @@ class OAuth extends OAuth_Client {
 			throw new RuntimeException( esc_html__( 'Unexpected response while waiting for sign-in.', 'webberzone-chatgpt-account' ) );
 		}
 
-		$response = static::post_form(
-			self::ISSUER . '/oauth/token',
-			array(
-				'grant_type'    => 'authorization_code',
-				'code'          => $body['authorization_code'],
-				'redirect_uri'  => self::ISSUER . '/deviceauth/callback',
-				'client_id'     => self::CLIENT_ID,
-				'code_verifier' => $body['code_verifier'],
-			)
-		);
-		$tokens   = static::decode( $response );
-		static::with_lock(
-			static function () use ( $flow, $tokens ) {
-				if ( ! static::flow_is_current( $flow ) ) {
-					throw new RuntimeException( esc_html__( 'The sign-in was cancelled or replaced.', 'webberzone-chatgpt-account' ) );
+		try {
+			$response = static::post_form(
+				self::ISSUER . '/oauth/token',
+				array(
+					'grant_type'    => 'authorization_code',
+					'code'          => $body['authorization_code'],
+					'redirect_uri'  => self::ISSUER . '/deviceauth/callback',
+					'client_id'     => self::CLIENT_ID,
+					'code_verifier' => $body['code_verifier'],
+				)
+			);
+			$tokens   = static::decode( $response );
+			static::with_lock(
+				static function () use ( $flow, $tokens ) {
+					if ( ! static::flow_is_current( $flow ) ) {
+						throw new RuntimeException( esc_html__( 'The sign-in was cancelled or replaced.', 'webberzone-chatgpt-account' ) );
+					}
+					delete_transient( static::flow_key() );
+					static::store_tokens( $tokens );
 				}
-				delete_transient( static::flow_key() );
-				static::store_tokens( $tokens );
-			}
-		);
+			);
+		} catch ( RuntimeException $e ) {
+			throw new RuntimeException( $e->getMessage(), 0, $e ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Message is already escaped; preserve the original exception.
+		}
 
 		return 'connected';
 	}

@@ -14,7 +14,7 @@
  * Plugin Name: WebberZone ChatGPT Account
  * Plugin URI:  https://github.com/WebberZone/webberzone-chatgpt-account/
  * Description: Use your ChatGPT subscription for text and image generation in the WordPress AI Client, signing in with a device code instead of an OpenAI API key.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      WebberZone
  * Author URI:  https://webberzone.com
  * License:     GPL-2.0+
@@ -42,7 +42,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 1.0.0
  */
 if ( ! defined( 'WZCGA_VERSION' ) ) {
-	define( 'WZCGA_VERSION', '1.0.0' );
+	define( 'WZCGA_VERSION', '1.0.1' );
 }
 
 /**

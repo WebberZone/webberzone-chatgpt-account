@@ -115,11 +115,12 @@ class Text_Generation_Model extends AbstractApiBasedModel implements TextGenerat
 			$params,
 			self::request_options( $this->getRequestOptions() )
 		);
-		$request  = Account_Authentication::apply_headers( $request, OAuth::get_valid_tokens() );
+		$tokens   = OAuth::get_valid_tokens();
+		$request  = Account_Authentication::apply_headers( $request, $tokens );
 		$response = $this->getHttpTransporter()->send( $request );
 
 		if ( 401 === $response->getStatusCode() && $allow_retry ) {
-			OAuth::refresh( true );
+			OAuth::refresh( true, $tokens['access_token'] );
 			return $this->send( $params, false );
 		}
 		if ( ! $response->isSuccessful() ) {
