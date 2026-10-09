@@ -88,7 +88,7 @@ class OAuth extends OAuth_Client {
 					'expires_at'     => time() + static::FLOW_TTL,
 					'last_poll'      => 0,
 				);
-				set_transient( static::flow_key(), $flow, static::FLOW_TTL );
+				static::save_flow( $flow, static::FLOW_TTL );
 
 				return array(
 					'user_code'        => $flow['user_code'],
@@ -119,7 +119,7 @@ class OAuth extends OAuth_Client {
 					return null;
 				}
 				$flow['last_poll'] = time();
-				set_transient( static::flow_key(), $flow, max( 1, $flow['expires_at'] - time() ) );
+				static::save_flow( $flow, max( 1, $flow['expires_at'] - time() ) );
 				return $flow;
 			}
 		);
@@ -165,6 +165,7 @@ class OAuth extends OAuth_Client {
 				}
 			);
 		} catch ( RuntimeException $e ) {
+			// Code 0 makes the failure non-retryable: the authorization code is single-use.
 			throw new RuntimeException( $e->getMessage(), 0, $e ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Message is already escaped; preserve the original exception.
 		}
 
