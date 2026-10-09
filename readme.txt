@@ -73,6 +73,7 @@ Release date: TBD
 **Fixed**
 
 * A token refresh rejected with HTTP 400 for a reason other than an expired or revoked session disconnected the account.
+* Disconnecting caused a fatal error when the WordPress AI Client was unavailable.
 * Uninstalling left pending sign-in data in the database.
 
 = 1.0.2 =

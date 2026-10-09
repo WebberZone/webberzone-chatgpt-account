@@ -39,14 +39,14 @@ class Model_Directory implements ModelMetadataDirectoryInterface {
 	 *
 	 * @var string
 	 */
-	const CACHE_KEY = 'wzcga_models';
+	const CACHE_KEY = Token_Store::MODELS_KEY;
 
 	/**
 	 * Transient set when the live model list could not be fetched, to avoid retrying on every request.
 	 *
 	 * @var string
 	 */
-	const FAILED_KEY = 'wzcga_models_failed';
+	const FAILED_KEY = Token_Store::MODELS_FAILED_KEY;
 
 	/**
 	 * Image model used by Codex with a ChatGPT sign-in.
