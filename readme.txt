@@ -65,6 +65,11 @@ Release date: 9 October 2026
 **Added**
 
 * Settings → Connectors warning when the authentication salts are stored in the database.
+* `wzcga_min_timeout` filter for the minimum request timeout.
+
+**Changed**
+
+* Text models keep the caller's request timeout, so a plugin can fall back to another provider sooner. Image requests and requests without a timeout still get 180 seconds.
 
 **Security**
 
@@ -75,6 +80,7 @@ Release date: 9 October 2026
 * A token refresh rejected with HTTP 400 for a reason other than an expired or revoked session disconnected the account.
 * Disconnecting caused a fatal error when the WordPress AI Client was unavailable.
 * Uninstalling left pending sign-in data in the database.
+* Every text model was rejected by ChatGPT with HTTP 400 because an outdated Codex client version hid the current models. The fallback model is now GPT-5.5.
 
 = 1.0.2 =
 
