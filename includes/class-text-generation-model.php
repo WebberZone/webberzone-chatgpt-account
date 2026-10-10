@@ -147,7 +147,7 @@ class Text_Generation_Model extends AbstractApiBasedModel implements TextGenerat
 		/**
 		 * Filters the minimum request timeout in seconds.
 		 *
-		 * @since 1.0.3
+		 * @since 1.0.4
 		 *
 		 * @param float  $minimum  Minimum timeout. 0 for text models, otherwise 180.
 		 * @param string $model_id Model ID, or an empty string when unknown.
@@ -166,7 +166,7 @@ class Text_Generation_Model extends AbstractApiBasedModel implements TextGenerat
 	/**
 	 * Returns the default timeout the WordPress AI Client sets on every prompt.
 	 *
-	 * @since 1.0.3
+	 * @since 1.0.4
 	 *
 	 * @return float
 	 */

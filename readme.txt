@@ -5,7 +5,7 @@ Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: ai-provider-for-openai
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,6 +58,22 @@ Enable it in ChatGPT under Settings → Security, then try again. Workspace (Bus
 
 == Changelog ==
 
+= 1.0.4 =
+
+Release date: 10 October 2026
+
+**Added**
+
+* `wzcga_min_timeout` filter for the minimum request timeout.
+
+**Changed**
+
+* Text models keep the caller's request timeout, so a plugin can fall back to another provider sooner. Image requests and requests without a timeout, including the WordPress AI Client's 30-second default, still get 180 seconds.
+
+**Fixed**
+
+* Every text model was rejected by ChatGPT with HTTP 400 because an outdated Codex client version hid the current models. The fallback model is now GPT-5.5.
+
 = 1.0.3 =
 
 Release date: 9 October 2026
@@ -65,11 +81,6 @@ Release date: 9 October 2026
 **Added**
 
 * Settings → Connectors warning when the authentication salts are stored in the database.
-* `wzcga_min_timeout` filter for the minimum request timeout.
-
-**Changed**
-
-* Text models keep the caller's request timeout, so a plugin can fall back to another provider sooner. Image requests and requests without a timeout, including the WordPress AI Client's 30-second default, still get 180 seconds.
 
 **Security**
 
@@ -80,7 +91,6 @@ Release date: 9 October 2026
 * A token refresh rejected with HTTP 400 for a reason other than an expired or revoked session disconnected the account.
 * Disconnecting caused a fatal error when the WordPress AI Client was unavailable.
 * Uninstalling left pending sign-in data in the database.
-* Every text model was rejected by ChatGPT with HTTP 400 because an outdated Codex client version hid the current models. The fallback model is now GPT-5.5.
 
 = 1.0.2 =
 
@@ -119,6 +129,9 @@ Release date: 26 September 2026
 For the changelog of earlier versions, please refer to the [releases page on GitHub](https://github.com/WebberZone/webberzone-chatgpt-account/releases).
 
 == Upgrade Notice ==
+
+= 1.0.4 =
+Fixes ChatGPT rejecting every text model with HTTP 400, and lets plugins set a shorter request timeout to fall back to another provider. Update recommended.
 
 = 1.0.3 =
 Security release. Encrypts the pending sign-in code, keeps accounts connected after temporary token errors and fixes a fatal error when disconnecting without the AI Client. Update recommended.
