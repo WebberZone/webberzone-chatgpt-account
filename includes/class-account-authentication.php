@@ -30,7 +30,7 @@ class Account_Authentication extends ApiKeyRequestAuthentication {
 	 *
 	 * @var string
 	 */
-	const CODEX_CLIENT_VERSION = '0.133.0';
+	const CODEX_CLIENT_VERSION = '0.162.1';
 
 	/**
 	 * Constructor.

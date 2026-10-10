@@ -61,9 +61,7 @@ class Model_Directory implements ModelMetadataDirectoryInterface {
 	 * @var array<string, string>
 	 */
 	const FALLBACK_MODELS = array(
-		'gpt-5.2'       => 'GPT-5.2',
-		'gpt-5.2-codex' => 'GPT-5.2 Codex',
-		'gpt-5.1'       => 'GPT-5.1',
+		'gpt-5.5' => 'GPT-5.5',
 	);
 
 	/**
@@ -187,7 +185,7 @@ class Model_Directory implements ModelMetadataDirectoryInterface {
 		$models = array();
 		foreach ( (array) $list as $entry ) {
 			$id = $entry['slug'] ?? ( $entry['id'] ?? '' );
-			if ( ! is_string( $id ) || ! self::is_text_model( $id ) || ( isset( $entry['visibility'] ) && 'list' !== $entry['visibility'] ) ) {
+			if ( ! is_string( $id ) || ! self::is_text_model( $id ) || ( isset( $entry['visibility'] ) && 'list' !== $entry['visibility'] ) || false === ( $entry['supported_in_api'] ?? null ) ) {
 				continue;
 			}
 			$models[ $id ] = is_string( $entry['display_name'] ?? null ) ? $entry['display_name'] : $id;
