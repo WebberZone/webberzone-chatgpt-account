@@ -30,7 +30,7 @@ class Text_Generation_Model extends AbstractApiBasedModel implements TextGenerat
 
 
 	/**
-	 * Minimum request timeout in seconds; streamed replies can be slow.
+	 * Request timeout in seconds when the caller sets none; streamed replies can be slow.
 	 *
 	 * @var float
 	 */
@@ -113,7 +113,7 @@ class Text_Generation_Model extends AbstractApiBasedModel implements TextGenerat
 				'Accept'       => 'text/event-stream',
 			),
 			$params,
-			self::request_options( $this->getRequestOptions() )
+			self::request_options( $this->getRequestOptions(), $this->metadata()->getId() )
 		);
 		$tokens   = OAuth::get_valid_tokens();
 		$request  = Account_Authentication::apply_headers( $request, $tokens );
@@ -132,15 +132,32 @@ class Text_Generation_Model extends AbstractApiBasedModel implements TextGenerat
 	/**
 	 * Returns request options with at least the minimum timeout.
 	 *
+	 * A caller's timeout is kept for text models so it can fall back to another provider; image requests keep the full timeout.
+	 *
 	 * @since 1.0.0
 	 *
-	 * @param  RequestOptions|null $options Existing options.
+	 * @param  RequestOptions|null $options  Existing options.
+	 * @param  string              $model_id Model ID, or an empty string when unknown.
 	 * @return RequestOptions
 	 */
-	public static function request_options( $options ) {
+	public static function request_options( $options, string $model_id = '' ) {
 		$options = $options ? clone $options : new RequestOptions();
-		if ( null === $options->getTimeout() || $options->getTimeout() < self::MIN_TIMEOUT ) {
+		$minimum = '' === $model_id || Model_Directory::IMAGE_MODEL === $model_id ? self::MIN_TIMEOUT : 0.0;
+
+		/**
+		 * Filters the minimum request timeout in seconds.
+		 *
+		 * @since 1.0.3
+		 *
+		 * @param float  $minimum  Minimum timeout. 0 for text models, otherwise 180.
+		 * @param string $model_id Model ID, or an empty string when unknown.
+		 */
+		$minimum = (float) apply_filters( 'wzcga_min_timeout', $minimum, $model_id );
+
+		if ( null === $options->getTimeout() ) {
 			$options->setTimeout( self::MIN_TIMEOUT );
+		} elseif ( $options->getTimeout() < $minimum ) {
+			$options->setTimeout( $minimum );
 		}
 		return $options;
 	}

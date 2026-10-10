@@ -31,6 +31,7 @@ Not supported: embeddings, text-to-speech and image editing.
 | --- | --- |
 | `wzcga_codex_client_version` | Codex CLI version reported to the backend; it gates which models are listed. |
 | `wzcga_fallback_models` | Text models offered when the live model list can't be fetched. |
+| `wzcga_min_timeout` | Minimum request timeout in seconds, given the model ID. Text models keep the caller's timeout by default. |
 
 ## Shared files
 
