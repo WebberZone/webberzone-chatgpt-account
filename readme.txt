@@ -69,7 +69,7 @@ Release date: 9 October 2026
 
 **Changed**
 
-* Text models keep the caller's request timeout, so a plugin can fall back to another provider sooner. Image requests and requests without a timeout still get 180 seconds.
+* Text models keep the caller's request timeout, so a plugin can fall back to another provider sooner. Image requests and requests without a timeout, including the WordPress AI Client's 30-second default, still get 180 seconds.
 
 **Security**
 
