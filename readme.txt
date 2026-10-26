@@ -50,7 +50,9 @@ This plugin signs in with the public OAuth client of OpenAI's Codex CLI and call
 
 = Where are my ChatGPT tokens stored? =
 
-In the `wzcga_tokens` option, encrypted with a key derived from your site's authentication salts. Changing the salts in wp-config.php disconnects the account. Define `AUTH_KEY` and `AUTH_SALT` in wp-config.php; if they are missing, WordPress stores generated salts in the database and the plugin warns you on Settings → Connectors. Deactivating keeps the connection; uninstalling removes it.
+In the `wzcga_tokens` option, encrypted with a key derived from your site's authentication salts. Define `AUTH_KEY` and `AUTH_SALT` in wp-config.php; if they are missing, WordPress stores generated salts in the database and the plugin warns you on Settings → Connectors.
+
+Deactivating keeps the connection. Disconnecting or uninstalling deletes the tokens and revokes the sign-in with OpenAI; on multisite, uninstalling cleans up every site. If OpenAI does not confirm the revocation, Settings → Connectors asks you to sign out of all sessions in your account settings. Changing the salts makes the stored tokens unreadable but does not revoke them, so disconnect before you change them.
 
 = The sign-in says device code login is turned off =
 

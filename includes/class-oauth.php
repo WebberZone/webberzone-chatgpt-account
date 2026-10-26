@@ -193,6 +193,26 @@ class OAuth extends OAuth_Client {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * Sent as JSON, like the refresh request; the form-encoded variant does not report unknown tokens.
+	 *
+	 * @since 1.0.4
+	 *
+	 * @param array $tokens Current token data.
+	 */
+	protected static function request_revoke( array $tokens ) {
+		return static::post_json(
+			self::ISSUER . '/api/accounts/oauth/revoke',
+			array(
+				'client_id'       => self::CLIENT_ID,
+				'token'           => $tokens['refresh_token'],
+				'token_type_hint' => 'refresh_token',
+			)
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @since 1.0.0
 	 *
 	 * @param  array $body     Token endpoint response.
