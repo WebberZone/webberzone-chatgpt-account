@@ -62,7 +62,7 @@ Enable it in ChatGPT under Settings → Security, then try again. Workspace (Bus
 
 = 1.0.4 =
 
-Release date: 10 October 2026
+Release date: 26 October 2026
 
 **Added**
 
@@ -72,9 +72,15 @@ Release date: 10 October 2026
 
 * Text models keep the caller's request timeout, so a plugin can fall back to another provider sooner. Image requests and requests without a timeout, including the WordPress AI Client's 30-second default, still get 180 seconds.
 
+**Security**
+
+* Disconnecting and uninstalling now revoke the sign-in with OpenAI, with a warning on Settings → Connectors if OpenAI does not confirm it.
+
 **Fixed**
 
 * Every text model was rejected by ChatGPT with HTTP 400 because an outdated Codex client version hid the current models. The fallback model is now GPT-5.5.
+* A temporary token refresh error failed AI requests while the current access token was still valid; the refresh now retries after a minute.
+* Uninstalling on multisite removed the stored tokens from the main site only.
 
 = 1.0.3 =
 
@@ -133,7 +139,4 @@ For the changelog of earlier versions, please refer to the [releases page on Git
 == Upgrade Notice ==
 
 = 1.0.4 =
-Fixes ChatGPT rejecting every text model with HTTP 400, and lets plugins set a shorter request timeout to fall back to another provider. Update recommended.
-
-= 1.0.3 =
-Security release. Encrypts the pending sign-in code, keeps accounts connected after temporary token errors and fixes a fatal error when disconnecting without the AI Client. Update recommended.
+Fixes ChatGPT rejecting every text model with HTTP 400. Disconnecting now revokes the sign-in with OpenAI, uninstalling cleans up every site on multisite, and temporary token errors no longer interrupt AI requests. Update recommended.
