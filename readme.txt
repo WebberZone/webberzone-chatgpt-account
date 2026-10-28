@@ -62,7 +62,7 @@ Enable it in ChatGPT under Settings → Security, then try again. Workspace (Bus
 
 = 1.0.4 =
 
-Release date: 26 October 2026
+Release date: 28 October 2026
 
 **Added**
 
