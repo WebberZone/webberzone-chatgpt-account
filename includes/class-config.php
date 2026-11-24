@@ -62,7 +62,7 @@ class Config {
 	 */
 	public static function note() {
 		return array(
-			'text' => __( 'Before signing in, enable device code login for Codex in <a>ChatGPT → Settings → Security</a>.', 'webberzone-chatgpt-account' ),
+			'text' => __( 'This connector uses an unofficial ChatGPT subscription integration. OpenAI may change or block it. WordPress features on this site can use your plan allowance while connected. Connect only on a site you control. Enable device code login for Codex in <a>ChatGPT → Settings → Security</a> before signing in.', 'webberzone-chatgpt-account' ),
 			'url'  => OAuth::SECURITY_SETTINGS_URL,
 		);
 	}

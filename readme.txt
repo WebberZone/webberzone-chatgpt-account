@@ -5,7 +5,7 @@ Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: ai-provider-for-openai
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,6 +16,10 @@ Use your ChatGPT subscription for text and image generation in the WordPress AI 
 WebberZone ChatGPT Account adds a "ChatGPT Account" provider to the WordPress AI Client. Instead of pasting an OpenAI API key, you sign in with your ChatGPT account and usage counts against your ChatGPT plan.
 
 It sits alongside the AI Provider for OpenAI plugin, which it requires and reuses for request and response handling. Keep that plugin for anything that still needs an API key.
+
+= Maintenance =
+
+This single-provider plugin is in maintenance. WebberZone will ship security fixes and changes required when OpenAI changes or blocks the integration; there are no planned new features. Existing ChatGPT-only installs can keep using it. For new sites that need ChatGPT and Grok together, use [WebberZone AI Account Connector](https://github.com/WebberZone/webberzone-ai-account-connector).
 
 = Features =
 
@@ -30,13 +34,13 @@ It sits alongside the AI Provider for OpenAI plugin, which it requires and reuse
 * Image editing (sending an image to modify).
 * Sampling options such as temperature and top_p are accepted but ignored, as the ChatGPT backend rejects them.
 
-= Important: how this works, and the risk =
+= Before you connect =
 
-This plugin signs in with the public OAuth client of OpenAI's Codex CLI and calls the same undocumented ChatGPT backend that Codex uses with a ChatGPT login. It is not an official OpenAI integration.
+This plugin uses the public Codex OAuth client and an undocumented ChatGPT backend.
 
-* OpenAI may change or block this at any time.
-* Using a ChatGPT subscription outside OpenAI's own apps may conflict with OpenAI's Terms of Use, and could put your ChatGPT account at risk. Use it at your own discretion.
-* Anyone with administrator access to your site, or any code running on it, can use your ChatGPT plan while you are signed in. Use it on sites you control.
+* OpenAI may change or block this integration.
+* WordPress features on the site can use your ChatGPT plan allowance while the account is connected. Connect only on a site you control.
+* Review the [OpenAI Terms of Use](https://openai.com/policies/terms-of-use/) before signing in.
 
 == Installation ==
 
@@ -59,6 +63,19 @@ Deactivating keeps the connection. Disconnecting or uninstalling deletes the tok
 Enable it in ChatGPT under Settings → Security, then try again. Workspace (Business, Enterprise, Edu) accounts may need an admin to allow it.
 
 == Changelog ==
+
+= 1.0.5 =
+
+Release date: 24 November 2026
+
+**Changed**
+
+* Maintenance mode: security and provider-integration fixes only; no planned feature work.
+* Readme guidance for combined ChatGPT and Grok installs now points to WebberZone AI Account Connector.
+
+**Added**
+
+* A note on the ChatGPT Account Connectors card before sign-in about the unofficial integration and plan usage.
 
 = 1.0.4 =
 
@@ -137,6 +154,9 @@ Release date: 26 September 2026
 For the changelog of earlier versions, please refer to the [releases page on GitHub](https://github.com/WebberZone/webberzone-chatgpt-account/releases).
 
 == Upgrade Notice ==
+
+= 1.0.5 =
+Maintenance release with clearer Connectors guidance before sign-in. New combined installs should use WebberZone AI Account Connector. No action required for existing ChatGPT-only setups.
 
 = 1.0.4 =
 Fixes ChatGPT rejecting every text model with HTTP 400. Disconnecting now revokes the sign-in with OpenAI, uninstalling cleans up every site on multisite, and temporary token errors no longer interrupt AI requests. Update recommended.

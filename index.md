@@ -15,6 +15,14 @@ permalink: /
   </div>
 </div>
 
+
+<div class="home-section">
+  <div class="callout">
+    <h2>Maintenance</h2>
+    <p>This single-provider plugin is in maintenance: security and provider-integration fixes only. Existing ChatGPT-only installs can keep using it. For new sites that need ChatGPT and Grok together, use <a href="https://github.com/WebberZone/webberzone-ai-account-connector">WebberZone AI Account Connector</a>.</p>
+  </div>
+</div>
+
 <div class="home-section">
   <div class="eyebrow">Overview</div>
   <h2 class="section-title" style="margin-bottom:8px;">Sign in once, use it everywhere</h2>
@@ -40,14 +48,14 @@ permalink: /
 
 <div class="home-section" style="padding-top:0;">
   <div class="eyebrow">Read this first</div>
-  <h2 class="section-title" style="margin-bottom:8px;">How it works, and the risk</h2>
+  <h2 class="section-title" style="margin-bottom:8px;">Before you connect</h2>
   <div class="callout">
-    <h3>Not an official OpenAI integration</h3>
-    <p>This plugin signs in with the public OAuth client of OpenAI's Codex CLI and calls the same undocumented ChatGPT backend that Codex uses with a ChatGPT login.</p>
+    <h3>Unofficial ChatGPT subscription integration</h3>
+    <p>This plugin uses the public Codex OAuth client and an undocumented ChatGPT backend.</p>
     <ul>
-      <li>OpenAI may change or block this at any time.</li>
-      <li>Using a ChatGPT subscription outside OpenAI's own apps may conflict with OpenAI's Terms of Use and could put your ChatGPT account at risk.</li>
-      <li>Anyone with administrator access to your site, or any code running on it, can use your ChatGPT plan while you are signed in. Use it on sites you control.</li>
+      <li>OpenAI may change or block this integration.</li>
+      <li>WordPress features on the site can use your ChatGPT plan allowance while the account is connected. Connect only on a site you control.</li>
+      <li>Review the <a href="https://openai.com/policies/terms-of-use/">OpenAI Terms of Use</a> before signing in.</li>
     </ul>
   </div>
 </div>

@@ -10,7 +10,7 @@ _License:_ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
 ---
 
 > [!WARNING]
-> This plugin signs in with the public OAuth client of OpenAI's Codex CLI and calls the undocumented ChatGPT backend that Codex uses. It is not an official OpenAI integration. OpenAI may change or block it at any time, and using a ChatGPT subscription outside OpenAI's own apps may conflict with OpenAI's Terms of Use and put your ChatGPT account at risk. Anyone with admin access to the site can use your ChatGPT plan while you are signed in.
+> This plugin uses the public Codex OAuth client and an undocumented ChatGPT backend. OpenAI may change or block this integration. WordPress features on the site can use your ChatGPT plan allowance while the account is connected. Connect only on a site you control. Review the [OpenAI Terms of Use](https://openai.com/policies/terms-of-use/) before signing in.
 
 ## Overview
 
@@ -24,6 +24,10 @@ _WebberZone ChatGPT Account_ adds a **ChatGPT Account** provider to the WordPres
 - _No build step:_ hand-written ES module for the Connectors card.
 
 Not supported: embeddings, text-to-speech and image editing.
+
+## Maintenance
+
+This single-provider plugin is in maintenance: security and provider-integration fixes only. Existing ChatGPT-only installs can keep using it. For new sites that need ChatGPT and Grok together, see [WebberZone AI Account Connector](https://github.com/WebberZone/webberzone-ai-account-connector).
 
 ## Disconnecting and token refresh
 
