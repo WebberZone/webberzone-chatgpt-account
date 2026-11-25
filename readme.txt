@@ -2,7 +2,7 @@
 Contributors: webberzone, ajaydsouza
 Tags: ai, chatgpt, openai, ai client, connectors
 Requires at least: 7.0
-Tested up to: 7.1
+Tested up to: 7.2
 Requires PHP: 7.4
 Requires Plugins: ai-provider-for-openai
 Stable tag: 1.0.5
